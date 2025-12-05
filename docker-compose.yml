@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  autonomous-core:
+    build: .
+    container_name: autonomous-system
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "8000:8000"
+      - "8545:8545"
+    volumes:
+      - ./training_data:/autonomous_system/training_data
+      - ./logs:/autonomous_system/logs
+      - ./backups:/autonomous_system/backups
+      - ./data:/autonomous_system/data
+    environment:
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASS=${EMAIL_PASS}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    network_mode: "host"
+
+  tor-proxy:
+    image: dperson/torproxy
+    container_name: tor-proxy
+    restart: unless-stopped
+    ports:
+      - "9050:9050"
+      - "9051:9051"
+
+  mongodb:
+    image: mongo:latest
+    container_name: autonomous-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:alpine
+    container_name: autonomous-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongodb_data:
