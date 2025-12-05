@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Autonomous AI Control Panel</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 800px;
+      height: 600px;
+      font-family: 'Courier New', monospace;
+      background: #000;
+      color: #0f0;
+      overflow: hidden;
+    }
+    
+    .terminal {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .header {
+      background: #111;
+      padding: 10px;
+      border-bottom: 2px solid #0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .system-name {
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 5px #0f0;
+    }
+    
+    .status {
+      display: flex;
+      align-items: center;
+    }
+    
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+      background: #0f0;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .main-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    .sidebar {
+      width: 200px;
+      background: #111;
+      border-right: 1px solid #0f0;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    
+    .nav-item {
+      padding: 8px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
+    
+    .nav-item:hover {
+      background: rgba(0, 255, 0, 0.1);
+    }
+    
+    .nav-item.active {
+      background: rgba(0, 255, 0, 0.2);
+      border-left: 3px solid #0f0;
+    }
+    
+    .content-area {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+    
+    .section {
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+    }
+    
+    .card {
+      background: rgba(0, 255, 0, 0.05);
+      border: 1px solid #0f0;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .card-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #0f0;
+      border-bottom: 1px solid #0f0;
+      padding-bottom: 5px;
+    }
+    
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .metric {
+      background: rgba(0, 255, 0, 0.1);
+      padding: 10px;
+      border-radius: 3px;
+      text-align: center;
+    }
+    
+    .metric-label {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+    
+    .metric-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #0f0;
+    }
+    
+    .command-input {
+      width: 100%;
+      background: #111;
+      border: 1px solid #0f0;
+      color: #0f0;
+      padding: 10px;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 10px;
+      border-radius: 3px;
+    }
+    
+    .command-input:focus {
+      outline: none;
+      border-color: #0f0;
+      box-shadow: 0 0 5px #0f0;
+    }
+    
+    .button {
+      background: #0f0;
+      color: #000;
+      border: none;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      border-radius: 3px;
+      transition: all 0.3s;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    
+    .button:hover {
+      background: #000;
+      color: #0f0;
+      box-shadow: 0 0 10px #0f0;
+    }
+    
+    .button-danger {
+      background: #f00;
+      color: #fff;
+    }
+    
+    .button-danger:hover {
+      background: #000;
+      color: #f00;
+    }
+    
+    .log {
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid #0f0;
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    
+    .log-entry {
+      margin-bottom: 5px;
+      padding: 3px;
+      border-left: 2px solid #0f0;
+      padding-left: 8px;
+    }
+    
+    .log-timestamp {
+      color: #888;
+      margin-right: 8px;
+    }
+    
+    .connection-list {
+      list-style: none;
+    }
+    
+    .connection-item {
+      padding: 5px;
+      margin-bottom: 5px;
+      background: rgba(0, 255, 0, 0.1);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .connection-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    
+    .connection-status.connected {
+      background: #0f0;
+    }
+    
+    .connection-status.disconnected {
+      background: #f00;
+    }
+    
+    .repo-list {
+      list-style: none;
+    }
+    
+    .repo-item {
+      padding: 8px;
+      margin-bottom: 5px;
+      background: rgba(0, 255, 0, 0.05);
+      border-radius: 3px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+    
+    .quick-action {
+      background: rgba(0, 255, 0, 0.1);
+      border: 1px solid #0f0;
+      color: #0f0;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+    
+    .quick-action:hover {
+      background: rgba(0, 255, 0, 0.2);
+    }
+    
+    .form-group {
+      margin-bottom: 10px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      color: #0f0;
+      font-size: 14px;
+    }
+    
+    .form-input {
+      width: 100%;
+      background: #111;
+      border: 1px solid #0f0;
+      color: #0f0;
+      padding: 8px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #0f0;
+      box-shadow: 0 0 5px #0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="header">
+      <div class="system-name">AUTONOMOUS AI CONTROL PANEL</div>
+      <div class="status">
+        <div class="status-indicator"></div>
+        <span id="systemStatus">SYNCING...</span>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <div class="sidebar">
+        <div class="nav-item active" data-section="dashboard">
+          🏠 Dashboard
+        </div>
+        <div class="nav-item" data-section="commands">
+          ⚡ Commands
+        </div>
+        <div class="nav-item" data-section="communication">
+          📡 Communication
+        </div>
+        <div class="nav-item" data-section="repositories">
+          📚 Repositories
+        </div>
+        <div class="nav-item" data-section="servers">
+          🖥️ Servers
+        </div>
+        <div class="nav-item" data-section="blockchain">
+          🔗 Blockchain
+        </div>
+        <div class="nav-item" data-section="accounts">
+          👤 Accounts
+        </div>
+        <div class="nav-item" data-section="settings">
+          ⚙️ Settings
+        </div>
+        <div class="nav-item" data-section="logs">
+          📋 Logs
+        </div>
+      </div>
+      
+      <div class="content-area">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+          <div class="card">
+            <div class="card-title">SYSTEM STATUS</div>
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-label">CPU</div>
+                <div class="metric-value" id="cpu">--%</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">MEMORY</div>
+                <div class="metric-value" id="memory">--%</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">CONNECTIONS</div>
+                <div class="metric-value" id="connections">--</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">REPOSITORIES</div>
+                <div class="metric-value" id="repositories">--</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">QUICK ACTIONS</div>
+            <div class="quick-actions">
+              <div class="quick-action" data-command="sync_all">🔄 Sync All</div>
+              <div class="quick-action" data-command="backup">💾 Backup</div>
+              <div class="quick-action" data-command="scan_network">🔍 Scan Network</div>
+              <div class="quick-action" data-command="generate_content">📝 Generate Content</div>
+              <div class="quick-action" data-command="check_crypto">💰 Check Crypto</div>
+              <div class="quick-action" data-command="send_status">📤 Send Status</div>
+              <div class="quick-action" data-command="emergency_stop" style="background: rgba(255,0,0,0.2);">🛑 Emergency Stop</div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">ACTIVE CONNECTIONS</div>
+            <ul class="connection-list" id="connectionList">
+              <!-- Connections will be added here -->
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Commands Section -->
+        <div id="commands" class="section">
+          <div class="card">
+            <div class="card-title">EXECUTE COMMAND</div>
+            <input type="text" class="command-input" id="commandInput" placeholder="Enter command...">
+            <div class="quick-actions">
+              <div class="button" id="executeCommand">Execute</div>
+              <div class="button" id="clearCommand">Clear</div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">PREDEFINED COMMANDS</div>
+            <div class="quick-actions">
+              <div class="quick-action" data-command="git clone https://github.com/YahIWon/autonomous-ai-system.git">Clone Main Repo</div>
+              <div class="quick-action" data-command="send_sms 3602237462 'System Online'">Send SMS Test</div>
+              <div class="quick-action" data-command="send_email did.not.think.of.this@gmail.com 'Test' 'Hello from AI'">Send Email Test</div>
+              <div class="quick-action" data-command="connect_server websocket ws://127.0.0.1:8080">Connect WebSocket</div>
+              <div class="quick-action" data-command="create_repo test-repo 'Test Repository' false">Create Test Repo</div>
+              <div class="quick-action" data-command="blockchain_get_balance 0x...">Get Balance</div>
+              <div class="quick-action" data-command="github_create_token">Create GitHub Token</div>
+              <div class="quick-action" data-command="metamask_connect">Connect MetaMask</div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">COMMAND HISTORY</div>
+            <div class="log" id="commandHistory">
+              <!-- Command history will appear here -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Communication Section -->
+        <div id="communication" class="section">
+          <div class="card">
+            <div class="card-title">SEND SMS</div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="text" class="form-input" id="smsNumber" value="3602237462">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <textarea class="form-input" id="smsMessage" rows="3"></textarea>
+            </div>
+            <div class="button" id="sendSMS">Send SMS</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">SEND EMAIL</div>
+            <div class="form-group">
+              <label class="form-label">To</label>
+              <input type="email" class="form-input" id="emailTo" value="did.not.think.of.this@gmail.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subject</label>
+              <input type="text" class="form-input" id="emailSubject">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Body</label>
+              <textarea class="form-input" id="emailBody" rows="5"></textarea>
+            </div>
+            <div class="button" id="sendEmail">Send Email</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">MESSAGES</div>
+            <div class="log" id="messageLog">
+              <!-- Messages will appear here -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Repositories Section -->
+        <div id="repositories" class="section">
+          <div class="card">
+            <div class="card-title">CONNECT REPOSITORY</div>
+            <div class="form-group">
+              <label class="form-label">Repository URL</label>
+              <input type="text" class="form-input" id="repoUrl" placeholder="https://github.com/username/repo.git">
+            </div>
+            <div class="button" id="connectRepo">Connect</div>
+            <div class="button" id="cloneRepo">Clone</div>
+            <div class="button" id="createRepo">Create New</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">CONNECTED REPOSITORIES</div>
+            <ul class="repo-list" id="repoList">
+              <!-- Repositories will be listed here -->
+            </ul>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">GITHUB SETTINGS</div>
+            <div class="form-group">
+              <label class="form-label">GitHub Username</label>
+              <input type="text" class="form-input" id="githubUsername" value="YahIWon">
+            </div>
+            <div class="form-group">
+              <label class="form-label">GitHub Token</label>
+              <input type="password" class="form-input" id="githubToken" placeholder="Enter token...">
+            </div>
+            <div class="button" id="saveGitHub">Save</div>
+          </div>
+        </div>
+        
+        <!-- Servers Section -->
+        <div id="servers" class="section">
+          <div class="card">
+            <div class="card-title">SERVER MANAGEMENT</div>
+            <div class="quick-actions">
+              <div class="quick-action" data-server="websocket">🔄 Restart WebSocket</div>
+              <div class="quick-action" data-server="api">🔄 Restart API</div>
+              <div class="quick-action" data-server="http">🔄 Restart HTTP</div>
+              <div class="quick-action" data-server="https">🔄 Restart HTTPS</div>
+              <div class="quick-action" data-server="ftp">🔄 Restart FTP</div>
+              <div class="quick-action" data-server="blockchain">🔄 Restart Blockchain</div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">SERVER STATUS</div>
+            <div class="metric-grid" id="serverStatus">
+              <!-- Server status will be added here -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Blockchain Section -->
+        <div id="blockchain" class="section">
+          <div class="card">
+            <div class="card-title">META MASK</div>
+            <div id="metamaskStatus">Loading MetaMask status...</div>
+            <div class="button" id="connectMetaMask">Connect MetaMask</div>
+            <div class="button" id="disconnectMetaMask">Disconnect</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">BLOCKCHAIN TRANSACTION</div>
+            <div class="form-group">
+              <label class="form-label">To Address</label>
+              <input type="text" class="form-input" id="txTo">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Amount (ETH)</label>
+              <input type="text" class="form-input" id="txAmount">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data (Hex)</label>
+              <input type="text" class="form-input" id="txData">
+            </div>
+            <div class="button" id="sendTransaction">Send Transaction</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">NFT OPERATIONS</div>
+            <div class="quick-actions">
+              <div class="quick-action" data-nft="create">Create NFT</div>
+              <div class="quick-action" data-nft="mint">Mint NFT</div>
+              <div class="quick-action" data-nft="transfer">Transfer NFT</div>
+              <div class="quick-action" data-nft="list">List for Sale</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Accounts Section -->
+        <div id="accounts" class="section">
+          <div class="card">
+            <div class="card-title">CREATE ACCOUNT</div>
+            <div class="form-group">
+              <label class="form-label">Platform</label>
+              <select class="form-input" id="accountPlatform">
+                <option value="github">GitHub</option>
+                <option value="twitter">Twitter</option>
+                <option value="gmail">Gmail</option>
+                <option value="facebook">Facebook</option>
+                <option value="instagram">Instagram</option>
+                <option value="discord">Discord</option>
+                <option value="telegram">Telegram</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input type="text" class="form-input" id="accountUsername">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" id="accountEmail">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-input" id="accountPassword">
+            </div>
+            <div class="button" id="createAccount">Create Account</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">MANAGED ACCOUNTS</div>
+            <ul class="repo-list" id="accountList">
+              <!-- Accounts will be listed here -->
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Settings Section -->
+        <div id="settings" class="section">
+          <div class="card">
+            <div class="card-title">SYSTEM SETTINGS</div>
+            <div class="form-group">
+              <label class="form-label">
+                <input type="checkbox" id="autoSync" checked> Auto Sync
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                <input type="checkbox" id="autoBackup" checked> Auto Backup
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                <input type="checkbox" id="notifications" checked> Notifications
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sync Interval (ms)</label>
+              <input type="number" class="form-input" id="syncInterval" value="1000">
+            </div>
+            <div class="button" id="saveSettings">Save Settings</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">DANGER ZONE</div>
+            <div class="button button-danger" id="clearAllData">Clear All Data</div>
+            <div class="button button-danger" id="resetSystem">Reset System</div>
+            <div class="button button-danger" id="uninstallExtension">Uninstall Extension</div>
+          </div>
+        </div>
+        
+        <!-- Logs Section -->
+        <div id="logs" class="section">
+          <div class="card">
+            <div class="card-title">SYSTEM LOGS</div>
+            <div class="log" id="systemLog">
+              <!-- Logs will appear here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
