@@ -1,0 +1,110 @@
+{
+  "manifest_version": 3,
+  "name": "Autonomous AI Control Center",
+  "version": "4.2.1",
+  "description": "Permanently synced interface to Autonomous AI Core System",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "webRequest",
+    "webNavigation",
+    "tabs",
+    "notifications",
+    "clipboardRead",
+    "clipboardWrite",
+    "downloads",
+    "history",
+    "cookies",
+    "management",
+    "proxy",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "alarms",
+    "identity",
+    "unlimitedStorage",
+    "system.display",
+    "system.memory",
+    "system.cpu",
+    "system.storage"
+  ],
+  "host_permissions": [
+    "*://*/*",
+    "file://*/*",
+    "ftp://*/*",
+    "ws://*/*",
+    "wss://*/*",
+    "chrome://*/*",
+    "chrome-extension://*/*",
+    "127.0.0.1:*",
+    "localhost:*",
+    "0.0.0.0:*"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://localhost:*/*",
+      "*://127.0.0.1:*/*",
+      "*://autonomous-ai-system.github.io/*",
+      "*://github.com/YahIWon/*",
+      "*://github.com/*",
+      "*://api.github.com/*",
+      "*://*.replit.dev/*",
+      "*://*.codespaces.github.dev/*",
+      "*://*.vercel.app/*",
+      "*://*.netlify.app/*"
+    ]
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AI Control Panel",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options.html",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "injected.js",
+        "styles.css",
+        "ai_core.js",
+        "websocket_bridge.js",
+        "sync_engine.js",
+        "repo_integrator.js",
+        "blockchain_bridge.js",
+        "metamask_integration.js",
+        "communication_engine.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src * data: blob: filesystem:;"
+  },
+  "oauth2": {
+    "client_id": "autonomous-ai-system",
+    "scopes": [
+      "https://www.googleapis.com/auth/drive",
+      "https://www.googleapis.com/auth/gmail.send",
+      "https://www.googleapis.com/auth/documents",
+      "https://www.googleapis.com/auth/spreadsheets"
+    ]
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyour-public-key-here",
+  "update_url": "https://autonomous-ai-system.github.io/updates.xml"
+}
