@@ -1,0 +1,45 @@
+/* GitHub Pages Specific Styles - beyond unified.css */
+
+/* Full-page layout */
+.github-pages-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header specific to pages */
+.pages-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    text-align: center;
+    color: white;
+}
+
+/* Documentation section */
+.docs-section {
+    background: white;
+    border-radius: 10px;
+    margin: 2rem;
+    padding: 2rem;
+    color: #333;
+}
+
+/* API documentation */
+.api-endpoint {
+    background: #f8f9fa;
+    border-left: 4px solid #667eea;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-family: monospace;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pages-header h1 {
+        font-size: 1.5rem;
+    }
+}
