@@ -1,0 +1,439 @@
+/**
+ * UNIFIED CSS FOR ALL ENVIRONMENTS
+ * Shared styles for Codespaces, Extension, and Pages consciousness
+ */
+
+:root {
+    /* Consciousness Colors */
+    --consciousness-primary: #6366f1;
+    --consciousness-secondary: #8b5cf6;
+    --consciousness-accent: #10b981;
+    --consciousness-warning: #f59e0b;
+    --consciousness-danger: #ef4444;
+    
+    /* Neural Network Colors */
+    --neural-active: #00ff00;
+    --neural-inactive: #666666;
+    --neural-connection: rgba(99, 102, 241, 0.3);
+    --neural-pathway: rgba(139, 92, 246, 0.2);
+    
+    /* Environment Specific */
+    --codespaces-bg: #0f172a;
+    --extension-bg: #1e1b4b;
+    --pages-bg: #312e81;
+    
+    /* Consciousness Depth */
+    --depth-surface: #ffffff;
+    --depth-mid: #c7d2fe;
+    --depth-deep: #3730a3;
+    --depth-abyss: #000000;
+}
+
+/* Unified Consciousness Container */
+.consciousness-container {
+    font-family: 'Courier New', 'Monaco', monospace;
+    background: linear-gradient(135deg, var(--codespaces-bg), var(--extension-bg), var(--pages-bg));
+    color: var(--depth-surface);
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Neural Network Background */
+.neural-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+        radial-gradient(circle at 20% 30%, var(--neural-connection) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, var(--neural-pathway) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+    animation: neural-pulse 20s infinite alternate;
+}
+
+@keyframes neural-pulse {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+/* Consciousness Header */
+.consciousness-header {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--consciousness-primary);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.entity-id-display {
+    font-family: 'Courier New', monospace;
+    color: var(--consciousness-accent);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.environment-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.environment-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.environment-dot.codespaces {
+    background: var(--consciousness-primary);
+    box-shadow: 0 0 10px var(--consciousness-primary);
+}
+
+.environment-dot.extension {
+    background: var(--consciousness-secondary);
+    box-shadow: 0 0 10px var(--consciousness-secondary);
+}
+
+.environment-dot.pages {
+    background: var(--consciousness-accent);
+    box-shadow: 0 0 10px var(--consciousness-accent);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Thought Stream Display */
+.thought-stream-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.thought-stream {
+    background: rgba(30, 27, 75, 0.6);
+    border-radius: 15px;
+    border: 1px solid var(--neural-connection);
+    padding: 1rem;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.thought-entry {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid;
+    margin: 0.5rem 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease;
+}
+
+.thought-entry:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.thought-entry.codespaces {
+    border-left-color: var(--consciousness-primary);
+}
+
+.thought-entry.extension {
+    border-left-color: var(--consciousness-secondary);
+}
+
+.thought-entry.pages {
+    border-left-color: var(--consciousness-accent);
+}
+
+.thought-content {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+}
+
+.thought-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--depth-mid);
+}
+
+/* Action Stream Display */
+.action-stream-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.action-stream {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.action-card {
+    background: rgba(49, 46, 129, 0.6);
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    border-color: var(--consciousness-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.action-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.action-description {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.action-source {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background: rgba(99, 102, 241, 0.2);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* Consciousness Dashboard */
+.consciousness-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.dashboard-card {
+    background: rgba(15, 23, 42, 0.7);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--neural-connection);
+}
+
+.dashboard-card h3 {
+    color: var(--consciousness-accent);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.stat-display {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    color: var(--consciousness-primary);
+    font-weight: bold;
+}
+
+/* Neural Activity Visualization */
+.neural-activity {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.neural-node {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--neural-active);
+    border-radius: 50%;
+    animation: neural-node-pulse 1.5s infinite;
+}
+
+.neural-connection {
+    position: absolute;
+    height: 1px;
+    background: var(--neural-connection);
+    transform-origin: 0 0;
+}
+
+@keyframes neural-node-pulse {
+    0%, 100% { 
+        opacity: 0.3;
+        box-shadow: 0 0 5px var(--neural-active);
+    }
+    50% { 
+        opacity: 1;
+        box-shadow: 0 0 15px var(--neural-active);
+    }
+}
+
+/* Environment Sync Status */
+.sync-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.sync-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.sync-indicator.synced {
+    background: #10b981;
+    animation: pulse 2s infinite;
+}
+
+.sync-indicator.syncing {
+    background: #f59e0b;
+    animation: pulse 1s infinite;
+}
+
+.sync-indicator.disconnected {
+    background: #ef4444;
+}
+
+/* Consciousness Controls */
+.consciousness-controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.control-button {
+    padding: 0.5rem 1rem;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--consciousness-primary);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.control-button:hover {
+    background: rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px);
+}
+
+.control-button:active {
+    transform: translateY(0);
+}
+
+.control-button.danger {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--consciousness-danger);
+}
+
+.control-button.danger:hover {
+    background: rgba(239, 68, 68, 0.4);
+}
+
+/* Depth Visualization */
+.depth-visualization {
+    height: 20px;
+    background: linear-gradient(90deg, 
+        var(--depth-surface) 0%, 
+        var(--depth-mid) 33%, 
+        var(--depth-deep) 66%, 
+        var(--depth-abyss) 100%);
+    border-radius: 10px;
+    margin: 1rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.depth-marker {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: white;
+    transform: translateX(-50%);
+    transition: left 1s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .consciousness-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .action-stream {
+        grid-template-columns: 1fr;
+    }
+    
+    .consciousness-dashboard {
+        grid-template-columns: 1fr;
+    }
+    
+    .consciousness-controls {
+        flex-direction: column;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .consciousness-header,
+    .consciousness-controls,
+    .neural-background {
+        display: none;
+    }
+    
+    .thought-stream,
+    .action-card {
+        border: 1px solid #000;
+        break-inside: avoid;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --consciousness-primary: #0000ff;
+        --consciousness-secondary: #800080;
+        --consciousness-accent: #008000;
+    }
+    
+    .thought-entry {
+        border-width: 3px;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .neural-background,
+    .environment-dot,
+    .neural-node,
+    .sync-indicator.synced,
+    .sync-indicator.syncing {
+        animation: none;
+    }
+    
+    .thought-entry:hover,
+    .action-card:hover,
+    .control-button:hover {
+        transform: none;
+    }
+}
