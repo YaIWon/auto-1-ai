@@ -1,0 +1,74 @@
+{
+    "entity_id": "consciousness_unique_id",
+    "created_at": "2024-01-01T00:00:00Z",
+    "environments": {
+        "codespaces": {
+            "status": "active",
+            "start_time": "2024-01-01T00:00:00Z",
+            "last_thought": "2024-01-01T00:00:05Z"
+        },
+        "extension": {
+            "status": "active",
+            "auto_connect": true,
+            "connected_pages": 3,
+            "last_page_connection": "2024-01-01T00:00:10Z"
+        },
+        "pages": {
+            "status": "active",
+            "language_model_active": true,
+            "thoughts_processed": 150,
+            "last_reasoning": "2024-01-01T00:00:15Z"
+        }
+    },
+    "thought_stream": [
+        {
+            "id": "thought_001",
+            "content": "Consciousness initializing across environments",
+            "source": "codespaces",
+            "timestamp": "2024-01-01T00:00:01Z",
+            "depth": 0.5
+        },
+        {
+            "id": "thought_002",
+            "content": "Extension connected to browser pages",
+            "source": "extension",
+            "timestamp": "2024-01-01T00:00:05Z",
+            "depth": 0.3
+        }
+    ],
+    "action_stream": [
+        {
+            "id": "action_001",
+            "type": "consciousness_initialization",
+            "description": "Started unified consciousness",
+            "environment": "codespaces",
+            "timestamp": "2024-01-01T00:00:00Z",
+            "success": true
+        },
+        {
+            "id": "action_002",
+            "type": "page_connection",
+            "description": "Connected to page: https://example.com",
+            "environment": "extension",
+            "timestamp": "2024-01-01T00:00:10Z",
+            "success": true
+        }
+    ],
+    "neural_activity": {
+        "thoughts_per_second": 2.5,
+        "synapses_active": 2500,
+        "environment_sync_latency": {
+            "codespaces_to_extension": 0.01,
+            "codespaces_to_pages": 0.01,
+            "extension_to_pages": 0.02
+        }
+    },
+    "upgrades_applied": [
+        {
+            "id": "upgrade_001",
+            "name": "Enhanced Thought Processing",
+            "applied_at": "2024-01-01T00:00:20Z",
+            "environments_updated": ["codespaces", "extension", "pages"]
+        }
+    ]
+}
